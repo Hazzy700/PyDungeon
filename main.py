@@ -1,10 +1,23 @@
 
 from commands import Commands, resolveCommand
 from render import Render
+from stats import Stat
 
 
 def GameLoop():
-    gameState = {"CurrentState" : "Menu", "Exit" : False}
+    gameState = {
+        # States
+        "CurrentState" : "Menu",
+        "Exit" : False,
+
+        # Stats
+        "Health" : Stat(10),
+        "MaxHealth" : Stat(0, 10),
+        "Damage" : Stat(0),
+        "TimingBonus" : Stat(0, 1.25),
+
+        "Exp" : Stat(1)
+    }
 
     Render(gameState)
     while not gameState["Exit"]:
