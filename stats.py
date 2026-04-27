@@ -5,6 +5,7 @@ class Stat():
         self.Value = BaseValue
         self.Adds = {"Base" : Add}
         self.Multipliers = {"Base" : Mul}
+        self.Random = {"Base" : 0}
     
     def GetIncrementAmount(self):
         TotalAdd = 0
@@ -23,7 +24,6 @@ class Stat():
     def GetLevel(self):
         xp = self.Value
 
-        # Handle below first threshold
         if xp < 10:
             level = 0
             current_threshold = 0
@@ -31,10 +31,9 @@ class Stat():
             return level, current_threshold, next_threshold - xp
 
         level = 0
-        current_threshold = 10  # a(0) if you like, or treat this as level 1 start
+        current_threshold = 10 
         next_level = 1
 
-        # Walk upwards until the next level would exceed xp
         while True:
             next_threshold = 10 + 5 * next_level * (next_level + 1)
             if next_threshold > xp:
@@ -43,7 +42,11 @@ class Stat():
             level = next_level
             next_level += 1
 
-        # Distance to next level
         to_next = next_threshold - xp
 
         return level, current_threshold, to_next
+
+def UpdatePlayerGameState(gameState):
+    level, _, _ = gameState["Exp"].GetLevel()
+    gameState["Damage"].Adds["Level"] = level
+    gameState["MaxHealth"].Adds["Level"] = level * 5

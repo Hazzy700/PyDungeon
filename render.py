@@ -1,3 +1,5 @@
+from opponents import Opponents
+
 SCREEN_WIDTH = 120
 
 PyDungeonAscii = """
@@ -24,9 +26,29 @@ ExitAscii = """
 ░▀░░░▀░░░░░▀▀▀░▀░▀░▀▀▀░░▀░░░░░░▀░░░▀
 """
 
+ChooseYourAscii = """
+░█▀▀░█░█░█▀█░█▀█░█▀▀░█▀▀░░░█░█░█▀█░█░█░█▀▄
+░█░░░█▀█░█░█░█░█░▀▀█░█▀▀░░░░█░░█░█░█░█░█▀▄
+░▀▀▀░▀░▀░▀▀▀░▀▀▀░▀▀▀░▀▀▀░░░░▀░░▀▀▀░▀▀▀░▀░▀
+"""
+OpponentAscii = """
+░█▀█░█▀█░█▀█░█▀█░█▀█░█▀▀░█▀█░▀█▀
+░█░█░█▀▀░█▀▀░█░█░█░█░█▀▀░█░█░░█░
+░▀▀▀░▀░░░▀░░░▀▀▀░▀░▀░▀▀▀░▀░▀░░▀░
+"""
+
+AttackingAscii = """
+░█▀█░▀█▀░▀█▀░█▀█░█▀▀░█░█░▀█▀░█▀█░█▀▀ 
+░█▀█░░█░░░█░░█▀█░█░░░█▀▄░░█░░█░█░█░█░
+░▀░▀░░▀░░░▀░░▀░▀░▀▀▀░▀░▀░▀▀▀░▀░▀░▀▀▀░
+"""
+
 def PrintAsciiCentered(ascii_art: str):
     for line in ascii_art.splitlines():
         print(line.center(SCREEN_WIDTH))
+
+def PrintCenter(toPrint):
+    print(toPrint.center(SCREEN_WIDTH))
 
 def Space(Height):
     print("\n" * Height, end="")
@@ -37,7 +59,7 @@ def LevelMessage(gameState):
     print(LevelMessage.center(SCREEN_WIDTH))
 
 def HealthDisplay(gameState):
-    print(f"Health: {str(gameState["Health"].Value)}/{str(gameState["MaxHealth"].GetIncrementAmount())}".center(SCREEN_WIDTH))
+    print(f"Current Health: {str(gameState["Health"].Value)}/{str(gameState["MaxHealth"].GetIncrementAmount())}".center(SCREEN_WIDTH))
 
 def DisplayStats(gameState):
     LevelMessage(gameState)
@@ -55,8 +77,27 @@ def Menu(gameState):
     Space(3)
     MenuButtons()
 
+def AttackChoice(gameState):
+    PrintAsciiCentered(ChooseYourAscii)
+    PrintAsciiCentered(OpponentAscii)
+    Space(5)
+
+    for k, v in Opponents.items():
+        opponentDisplay = v.displayName + ": " + str(v.maxHp.GetIncrementAmount()) + " HP"
+        PrintCenter(opponentDisplay)
+        Space(1)
+
+def Attacking(gameState):
+    PrintAsciiCentered(AttackingAscii)
+    Space(1)
+    PrintCenter(gameState["CurrentOpponent"])
+
 def Render(gameState):
+    Space(10)
     if gameState["CurrentState"] == "Menu":
         Menu(gameState)
     elif gameState["CurrentState"] == "AttackChoice":
-        print("Attack choice")
+        AttackChoice(gameState)
+    elif gameState["CurrentState"] == "Attacking":
+        Attacking(gameState)
+ 

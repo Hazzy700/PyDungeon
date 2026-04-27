@@ -72,12 +72,12 @@ indexCommand(exit)
 
 # Resolve Command
 
-def resolveCommand(input_str: str):
+def resolveCommand(input_str: str, gameState):
     input_str = input_str.lower()
 
     # Step 1: find all commands whose names start with the input
     matches = [cmd for name, cmd in Commands.items()
-               if name.lower().startswith(input_str)]
+               if name.lower().startswith(input_str) and cmd.isEnabled(gameState)]
 
     if len(matches) == 0:
         return "No matches to command"  # no command matches
