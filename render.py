@@ -1,4 +1,4 @@
-from opponents import Opponents
+from globals import PrintAsciiCentered, PrintCenter, Space, Opponents, Commands
 
 SCREEN_WIDTH = 120
 
@@ -43,15 +43,16 @@ AttackingAscii = """
 ░▀░▀░░▀░░░▀░░▀░▀░▀▀▀░▀░▀░▀▀▀░▀░▀░▀▀▀░
 """
 
-def PrintAsciiCentered(ascii_art: str):
-    for line in ascii_art.splitlines():
-        print(line.center(SCREEN_WIDTH))
-
-def PrintCenter(toPrint):
-    print(toPrint.center(SCREEN_WIDTH))
-
-def Space(Height):
-    print("\n" * Height, end="")
+HitAscii = """
+░▀▄░░▀▄░░░░█░█░▀█▀░▀█▀░░░░▄▀░░▄▀
+░░▄▀░░▄▀░░░█▀█░░█░░░█░░░░▀▄░░▀▄░
+░▀░░░▀░░░░░▀░▀░▀▀▀░░▀░░░░░░▀░░░▀
+"""
+RunAscii = """
+░▀▄░░▀▄░░░░█▀▄░█░█░█▀█░░░░▄▀░░▄▀
+░░▄▀░░▄▀░░░█▀▄░█░█░█░█░░░▀▄░░▀▄░
+░▀░░░▀░░░░░▀░▀░▀▀▀░▀░▀░░░░░▀░░░▀
+"""
 
 def LevelMessage(gameState):
     Level, Exp, ToNext = gameState["Exp"].GetLevel()
@@ -89,8 +90,16 @@ def AttackChoice(gameState):
 
 def Attacking(gameState):
     PrintAsciiCentered(AttackingAscii)
+    Space(2)
+    Opponent = Opponents[gameState["CurrentOpponent"]]
+    PrintCenter(Opponent.displayName)
+    PrintCenter(f"{str(Opponent.hp.Value)}/{str(Opponent.maxHp.GetIncrementAmount())}HP")
     Space(1)
-    PrintCenter(gameState["CurrentOpponent"])
+    HealthDisplay(gameState)
+    Space(1)
+    PrintAsciiCentered(HitAscii)
+    Space(1)
+    PrintAsciiCentered(RunAscii)
 
 def Render(gameState):
     Space(10)

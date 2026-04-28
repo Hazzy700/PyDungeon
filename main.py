@@ -1,8 +1,10 @@
 
-from commands import Commands, resolveCommand
-from render import Render, Space
+from commands import resolveCommand
+from globals import PrintAsciiCentered, PrintCenter, Space, Opponents, Commands
 from stats import Stat, UpdatePlayerGameState
-
+from render import Render
+from opponents import Opponent
+from commands import Command
 
 def GameLoop():
     gameState = {
