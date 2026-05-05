@@ -7,7 +7,7 @@ class Stat():
         self.Multipliers = {"Base" : Mul}
         self.Random = {"Base" : 0}
     
-    def GetIncrementAmount(self):
+    def GetIncrementAmount(self, amount=1):
         TotalAdd = 0
         for k, v in self.Adds.items():
             TotalAdd += v
@@ -16,7 +16,7 @@ class Stat():
         for k, v in self.Multipliers.items():
             TotalMultiplier *= v
 
-        return TotalAdd * TotalMultiplier
+        return TotalAdd * TotalMultiplier * amount
 
     def Increment(self, amount):
         self.Value += self.GetIncrementAmount() * amount
@@ -50,3 +50,9 @@ def UpdatePlayerGameState(gameState):
     level, _, _ = gameState["Exp"].GetLevel()
     gameState["Damage"].Adds["Level"] = level
     gameState["MaxHealth"].Adds["Level"] = level * 5
+
+    if gameState["Gold"].Value <= 0:
+        gameState["Gold"].Value = 0
+
+    if gameState["CurrentState"] == "Menu":
+        gameState["Health"].Value = gameState["MaxHealth"].GetIncrementAmount()

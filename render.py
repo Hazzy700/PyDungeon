@@ -62,9 +62,13 @@ def LevelMessage(gameState):
 def HealthDisplay(gameState):
     print(f"Current Health: {str(gameState["Health"].Value)}/{str(gameState["MaxHealth"].GetIncrementAmount())}".center(SCREEN_WIDTH))
 
+def GoldDisplay(gameState):
+    PrintCenter(str(gameState["Gold"].Value) + "G")
+
 def DisplayStats(gameState):
     LevelMessage(gameState)
     HealthDisplay(gameState)
+    GoldDisplay(gameState)
 
 def MenuButtons():
     PrintAsciiCentered(AttackAscii)

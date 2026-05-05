@@ -79,7 +79,7 @@ def hitRun(gameState):
 
     while not done:
         PrintCenter("...")
-        time.sleep(0.5 + (random.randint(1,5) / 10))
+        time.sleep((random.randint(1,5) / 10))
         chance += 1
         done = random.randint(min(chance, max-1), max) == max-1
 
@@ -89,10 +89,10 @@ def hitRun(gameState):
     EndTime = time.time()
 
     TimeElapsed = EndTime - StartTime
-    if TimeElapsed < 0.5:
+    if TimeElapsed < 0.4:
         PrintCenter("CRITICAL HIT!")
         Opponent.TakeDamage(gameState, gameState["TimingBonus"].GetIncrementAmount())
-    elif TimeElapsed < 1:
+    elif TimeElapsed < 0.75:
         PrintCenter("Average hit")
         Opponent.TakeDamage(gameState, 1)
     else:
@@ -106,6 +106,15 @@ def hitRun(gameState):
     if Opponent.hp.Value <= 0:
         gameState["CurrentState"] = "Menu"
         PrintCenter("You won!")
+        Opponent.Death(gameState)
+        time.sleep(2)
+        return
+    
+    if gameState["Health"].Value <= 0:
+        gameState["CurrentState"] = "Menu"
+        PrintCenter("You lost...")
+        Opponent.EnemyWin(gameState)
+        time.sleep(2)
         return
 
     Opponent.Attack(gameState)

@@ -17,17 +17,18 @@ def GameLoop():
         # Stats
         "Health" : Stat(10),
         "MaxHealth" : Stat(0, 10),
-        "Damage" : Stat(0),
+        "Damage" : Stat(0, 1),
         "TimingBonus" : Stat(0, 1.25),
         "MissedReduction" : Stat(0, 0.8),
 
-        "Exp" : Stat(0)
+        "Exp" : Stat(0, 1, 4),
+        "Gold" : Stat(0, 1)
     }
 
     Render(gameState)
-    UpdatePlayerGameState(gameState)
 
     while not gameState["Exit"]:
+        UpdatePlayerGameState(gameState)
         Space(5)
         inp = input("> ")
         command = resolveCommand(inp, gameState)
@@ -35,8 +36,10 @@ def GameLoop():
             print(command)
         else:
             if command.isEnabled(gameState):
+                UpdatePlayerGameState(gameState)
                 command.Run(gameState)
                 if command.triggersRender:
+                    UpdatePlayerGameState(gameState)
                     Render(gameState)
             
 
